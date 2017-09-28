@@ -1,0 +1,39 @@
+doctype html
+html
+head
+title="Hello Pug"
+body
+p.greetings#people Hello World, First use PUG of old name is jade. Jade has Change to PUG!
+
+
+<!--Tags in PUG, Simple Tags----->
+
+	<!--Space seperated---->
+h1 Welcome to Pug
+
+	<!--Piped text---->
+div
+| To insert multiline text,
+| You can use the pipe operator.
+
+p
+
+<!--Block of text---->
+div.
+But that gets tedious if you have a lot of text.
+You can use "." at the end of tag to denote block of text.
+To put tags inside this block, simply enter tag in a new line and
+indent it accordingly.
+
+p
+
+<!--Attributes-->
+To define attributes, we use a comma separated list of attributes, in parenthesis.class
+and ID attributes have special representations. The following line of code covers defining
+attributes
+
+div.container.column.main#division(width="100",height="100")
+This line of code, gets converted to the following.
+<div class="container column main" id="division" width="100" height="100"></div>
+
+<p><a href="http://localhost:8000/dynamic_view">About me</a></p>
