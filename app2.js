@@ -15,15 +15,16 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false }); // Create app
 var multer = require('multer');
 var upload = multer();
 
-//For mongodb database tools
+
+
+//load mongoose
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/belajar');
-    var personSchema = mongoose.Schema({
-    name: String,
-    age: Number,
-    nationality: String
-});
-var Person = mongoose.model("Person", personSchema);
+mongoose.Promise = global.Promise;
+
+//hubungkan ke Mongodb
+mongoose.connect('mongodb://localhost/belajar')  
+  .then(() => console.log('Berhasil terhubung dengan MongoDB'))
+  .catch((err) => console.error(err));
 
 
 //Call for PUGS Engine templating
@@ -34,7 +35,7 @@ app.set('views','./views');
 
 //Defaul Route to Home page
 app.get('/home', function(req, res){
-    res.render('template');
+    res.render('template', { title: 'Belajar Node JS PUGS engine,mongodb dll', message: 'Wellcome to My website!' })
 });
 
 
@@ -85,6 +86,41 @@ app.post('/post_process', function(req, res){
 
 
 //==================== MANAGE DATABASE WITH MONGODB =========================
+//Call form
+app.get('/anggota_form', function(req, res){
+    res.render('crud_mongo/form_anggota',{ title: 'Belajar Node JS PUGS engine,mongodb dll', message: 'Wellcome to My website!' });
+});
+
+
+
+app.post('/save_anggota', function(req, res){
+    var anggotaInfo = req.body; //Get the parsed information
+
+    if(!anggotaInfo.username || !anggotaInfo.password || !anggotaInfo.alamat || !anggotaInfo.nilai){
+            res.render('show_message', {message: "Sorry, Please input form correctly ! ",
+            type: "error"});
+        } else {
+        var newAnggota = new Anggota({
+                        username: anggotaInfo.username,
+                        password: anggotaInfo.password,
+                        alamat: anggotaInfo.alamat,
+                        nilai: anggotaInfo.nilai
+                 });
+
+        newAnggota.save(function(err, Anggota){
+        if(err)
+            res.render('show_message', {message: "Database error", type: "error"});
+        else
+            res.render('show_message', {message: "Data anggota ditambahkan", type:"success", save_anggota: anggotaInfo});
+            console.log(response);
+            res.end(JSON.stringify(response));
+        });
+    }
+
+});
+
+
+
 
 
 
